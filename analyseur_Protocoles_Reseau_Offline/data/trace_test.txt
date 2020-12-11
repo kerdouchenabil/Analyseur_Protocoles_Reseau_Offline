@@ -1,0 +1,20 @@
+00 00 11 22 33 44 55 66 77 88 99 aa bb 08 00 ee ff
+10 01 12 23 34 45 56 66 77 88 99 aa bb cc dd ee ff gerer les lignes vides !!
+   hhhhhhc  ffksdkff fksksksslq  kddkl
+20 00 11 22 33 44 55 66 77 88 99 aa bb 08 00 ee ff
+30 01 12 23 34 45 56 66 77 88 99 aa bb cc dd ee ff
+40 00 11 22 33 44 55 66 77 88 99 aa bb 08 00 ee ff
+50 01 12 23 34 45 56 66 77 88 99 aa bb cc dd ee ff
+60 00 11 22 33 44 55 66 77 88 99 aa bb 08 00 ee ff
+70 01 12 23 34 45 56 66 77 88 99 aa bb cc dd ee ff
+80 00 11 22 33 44 55 66 77 88 99 aa bb 08 00 ee ff
+90 01 12 23 34 45 56 66 77 88 99 aa bb cc dd ee ff
+a0 00 11 22 33 44 55 66 77 88 99 aa bb 08 00 ee ff
+b0 01 12 23 34 45 56 66 77 88 99 aa bb cc dd ee ff
+c0 00 11 22 33 44 55 66 77 88 99 aa bb 08 00 ee ff
+d0 01 12 23 34 45 56 66 77 88 99 aa bb cc dd ee ff
+e0 00 11 22 33 44 55 66 77 88 99 aa bb 08 00 ee ff
+f0 01 12 23 34 45 56 66 77 88 99 aa bb cc dd ee ff
+trame2 TCP _______________________________________
+00 00 11 22 33 44 55 66 77 88 99 aa bb 80 80 ee ff
+10 01 12 23 34 45 56 66 77 88 99 aa bb cc dd ee ff
