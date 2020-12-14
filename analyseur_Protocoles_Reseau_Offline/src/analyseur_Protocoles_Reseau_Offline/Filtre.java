@@ -21,8 +21,15 @@ public class Filtre {
 			String[] octets = line.split(" ");
 			
 			//si l'offset n'est pas codé sur un octet ou + -> ignorer ligne
-			if( ! (octets[0].length()>1 && octets[0].length()%2==0) ) {
-				continue; //passe a la ligne suivante
+			try {
+				if( ! (octets[0].length()>1 && octets[0].length()%2==0) ) {
+					continue; //passe a la ligne suivante
+				}
+			}
+			//ignorer les lignes vides
+			catch (ArrayIndexOutOfBoundsException ae){
+				//System.out.println("ligne ignorée");
+				continue;
 			}
 			
 			try {

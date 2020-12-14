@@ -1,6 +1,9 @@
 package analyseur_Protocoles_Reseau_Offline;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.Checksum;
+
 
 public class IP implements IProtocole {
 	
@@ -10,18 +13,22 @@ public class IP implements IProtocole {
 	private String ttl, protocol, header_checksum;
 	private String source, dest;
 	private String options, padding, data;
-	
+	private List<String> octets;
 	private int tailleHeader, tailleOptions, tailleData; //header=entete+options=20+options
 	
 	private String fragment_offset_bin;
 
-	public IP(List<String> o) { //a partir de l'octet 14 après Ethernet
+	public IP(Ethernet eth) throws InvalidTrameException { //a partir de l'octet 14 après Ethernet
 		
+		octets = eth.getRemainingOctets();
+		List<String> o = octets ; 
 		version=o.get(0).charAt(0);
 		
 		ihl=o.get(0).charAt(1);
 		tailleHeader = 4*Convert.hex2dec(""+ihl);
-		
+		if(!headerLengthValid()) {
+			throw new InvalidTrameException("header length invalid, nombre d'octets insuffisant!");
+		}
 		tailleOptions = tailleHeader-20;
 		
 		tos=o.get(1);
@@ -90,12 +97,50 @@ public class IP implements IProtocole {
 		data = ""+tailleData;
 		
 	}
+	//en nb d'Octects 
+	public int getHeaderLength() {
+		return tailleHeader;
+	}
+	
+	public boolean verifyCheckSum () {
+		int sum = 0 ;
+		for (int i = 0 ;i < getHeaderLength();i+=2 ) {
+			int cour = 	Convert.hex2dec(octets.get(i)+octets.get(i+1));
+			sum += cour;
+			
+		}
+		String sum_hex = Integer.toHexString(sum);
+		Convert.adjustNumberLength(sum_hex, 4);
+		
+		if(sum_hex.length()>4) {
+			String depassement = ""+sum_hex.charAt(0);
+			sum_hex=sum_hex.substring(1);
+			
+			int d = Convert.hex2dec(depassement);
+			int s = Convert.hex2dec(sum_hex);
+			s+=d;
+			sum_hex = Integer.toHexString(s);
+			Convert.adjustNumberLength(sum_hex, 4);
+		}
+		
+		if(sum_hex.equals("FFFF") || sum_hex.equals("ffff") ) {
+			return true;
+		}
+		return false ;
+	}
+	public boolean headerLengthValid() {
+		return octets.size() >= tailleHeader; 
+	}
+	
+	public List<String> getData(){
+		return new ArrayList<>(octets.subList(4*Convert.hex2dec(""+ihl), octets.size()));
+	}
 	
 	public String toString() {
 		String s="Internet Protocol (IP)\n\t";
 		
 		s += "version: "+Convert.hex2dec(""+version)+"\n\t"
-				+ "Header Length: "+Convert.hex2dec(""+ihl)+"\n\t"
+				+ "Header Length: "+4*Convert.hex2dec(""+ihl)+"\n\t"
 				+ "TOS: "+Convert.hex2dec(tos)+"\n\t"
 				+ "Total length: "+Convert.hex2dec(total_length)+"\n\t"
 				+ "Identification: 0x"+id+" ("+Convert.hex2dec(id)+")\n\t"
@@ -105,13 +150,15 @@ public class IP implements IProtocole {
 				+ "Fragment offset: "+Convert.hex2dec(fragment_offset)+"(0b "+fragment_offset_bin+")\n\t"
 				+ "TTL: "+Convert.hex2dec(ttl)+"\n\t"
 				+ "Protocol: 0x"+protocol+" ("+Convert.hex2dec(protocol)+")\n\t" // a ameliorer
-				+ "Header checksum: "+Convert.hex2dec(header_checksum)+"\n\t"
+				+ "Header checksum: 0x"+header_checksum+" ("+Convert.hex2dec(header_checksum)+")\n\t"
 				+ "Source: "+source+"\n\t"
 				+ "Destination: "+dest+"\n\t";
 				//facultatif:
 				s+="Options: "+options+"\n\t"
 				+ "Padding: "+padding+" octets\n\t"
-				+ "Data: "+data+" octets\n\t";
+				+ "Data: "+data+" octets\n\t"
+				+"_______verification_______\n\t"
+				+ "checksum is valid: "+verifyCheckSum()+" \n\t";
 		
 		return s;
 	}

@@ -1,5 +1,6 @@
 package analyseur_Protocoles_Reseau_Offline;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -7,8 +8,10 @@ public class TCP implements IProtocole {
 	private String src_port,dst_port,sq_Number,acknow_Number,data_offset,reserved;
 	private char urg,ack,psh,rst,syn,fin;
 	private String window,checksum,urgent_pointer,options,padding,data;
-	
-	public TCP(List<String> octets) {
+	private List<String> octets; //données de IP
+	public TCP(IP ip) {
+		octets = ip.getData();
+		
 		src_port=octets.get(0)+octets.get(1);
 		dst_port=octets.get(2)+octets.get(3);
 		sq_Number="";
@@ -39,7 +42,7 @@ public class TCP implements IProtocole {
 		checksum = octets.get(16)+octets.get(17);
 		urgent_pointer = octets.get(18)+octets.get(19);
 		// options a ameliorer  
-		int fin_options = Convert.hex2dec(data_offset);
+		int fin_options = 4*Convert.hex2dec(data_offset);
 		options = "";
 		data = "";
 		options += (fin_options -20); //a ameliorer
@@ -47,24 +50,44 @@ public class TCP implements IProtocole {
 		data += (octets.size()-fin_options); // http ?
 	}
 	
+	//en nombre d'octets
+	public int getDataOffset() {
+		return 4*Convert.hex2dec(data_offset);
+	}
+	
+	
+	/**
+	 * @return données de TCP
+	 */
+	public List<String> getData(){
+		return new ArrayList<>(octets.subList(getDataOffset(), octets.size()));
+	}
+	
+	public boolean protocoleIsHttpRequest() {
+		return Convert.hex2dec(dst_port) == 80;
+	}
+	
+	public boolean protocoleIsHttpResponse() {
+		return Convert.hex2dec(src_port) == 80;
+	}
 	
 	public String toString () {
 		String s = "TCP\n\t";
 		
 		s +=  	"Source: "+Convert.hex2dec(src_port)+"\n\t"
 				+ "Destination: "+Convert.hex2dec(dst_port)+"\n\t"
-				+ "Sequence number: "+Convert.hex2dec(""+sq_Number)+"\n\t"
-				+ "Acknowledgement number: "+Convert.hex2dec(acknow_Number)+"\n\t"
-				+ "Data offset: "+Convert.hex2dec(data_offset)+"\n\t"
+				+ "Sequence number: 0x"+sq_Number+"\n\t"//Convert.hex2dec(""+sq_Number)+"\n\t"
+				+ "Acknowledgement number: 0x"+(acknow_Number)+"\n\t"//+Convert.hex2dec(acknow_Number)+"\n\t"
+				+ "Data offset(THL): "+4*Convert.hex2dec(data_offset)+" octects\n\t"
 				+ "Reserved: "+reserved+"\n\t"
-				+ "URG: "+urg+"\n\t"
-				+ "ACK: "+ack+"\n\t"
-				+ "PSH: "+psh+"\n\t"
-				+ "RST: "+rst+"\n\t"
-				+ "SYN: "+syn+"\n\t"
-				+ "FIN: "+fin+"\n\t"
-				+ "Window: "+window+"\n\t"
-				+ "Checksum: "+checksum+"\n\t"
+				+ "URG: "+urg+" Urgent:"+Convert.Flag(urg)+"\n\t"
+				+ "ACK: "+ack+" Acknowledgment:"+Convert.Flag(ack)+"\n\t"
+				+ "PSH: "+psh+" Push:"+Convert.Flag(psh)+"\n\t"
+				+ "RST: "+rst+" Reset:"+Convert.Flag(rst)+"\n\t"
+				+ "SYN: "+syn+" Syn:"+Convert.Flag(syn)+"\n\t"
+				+ "FIN: "+fin+" Fin:"+Convert.Flag(fin)+"\n\t"
+				+ "Window: "+Convert.hex2dec(window)+"\n\t"
+				+ "Checksum: 0x"+checksum+"\n\t"
 				+ "Urgent pointer: "+Convert.hex2dec(urgent_pointer)+"\n\t";
 				//facultatif:
 				s+="Options: "+options+"\n\t"

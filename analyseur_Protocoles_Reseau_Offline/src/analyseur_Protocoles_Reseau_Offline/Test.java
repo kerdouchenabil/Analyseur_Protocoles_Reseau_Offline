@@ -20,6 +20,8 @@ public class Test {
 			String reserved = reserved_flag_sbin.substring(0, 6);
 			System.out.println(reserved);*/
 			
+			System.out.println(Convert.ascii2char("41"));
+			
 			trace = new Trace(file);
 			
 			List<Trame> trames = Filtre.filtrer(trace);
@@ -27,16 +29,24 @@ public class Test {
 			System.out.println(trames.get(1)); //afficher la 2eme trame
 			
 			try {
-				Ethernet eth = new Ethernet (trames.get(0));
+				Ethernet eth = new Ethernet (trames.get(1));
 				System.out.println(eth);
 				
-				/*
-				IP ip = new IP(eth.getRemainingOctets());
-				System.out.println(ip);
-				*/
 				
-				TCP tcp = new TCP(eth.getRemainingOctets());
+				IP ip = new IP(eth);
+				System.out.println(ip);
+				
+				/* faire une vérification si protocole == tcp */
+				
+				TCP tcp = new TCP(ip);
 				System.out.println(tcp);
+
+				/* faire une vérification si protocole == http */
+				if(tcp.protocoleIsHttpRequest() || tcp.protocoleIsHttpResponse()) {
+					HTTP http = new HTTP(tcp);
+					System.out.println(http);
+				}
+				
 				
 			} catch (Exception e) {
 				e.printStackTrace();

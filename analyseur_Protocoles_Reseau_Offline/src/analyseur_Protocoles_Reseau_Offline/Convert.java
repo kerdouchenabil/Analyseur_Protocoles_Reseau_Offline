@@ -17,6 +17,7 @@ public class Convert {
 		String hex = Integer.toString(dec,16);
 		return hex;
 	}
+	
 	public static int bin2dec(String bin) {
 		String i = Convert.bin2hex(bin);
 		return Convert.hex2dec(i);
@@ -29,6 +30,17 @@ public class Convert {
 			res="0"+res;
 		}
 		return res;
+	}
+	
+	public static String Flag(char f ) {
+		if(f=='1') {
+			return " Set ";
+		}
+		return " Not set ";
+	}
+	
+	public static char ascii2char(String oct) {
+		return (char)(hex2dec(oct));
 	}
 	
 }
