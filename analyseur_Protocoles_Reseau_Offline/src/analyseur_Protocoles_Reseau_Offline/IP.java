@@ -70,12 +70,13 @@ public class IP implements IProtocole {
 			if(i != 19) dest += ".";
 		}
 		
-		
+		options = new ArrayList<String>();
 		/*on a minimun un octet d'options*/
 		if(tailleHeader>20) {
 			options = new Options(octets.subList(20, tailleHeader), tailleHeader).getOptionsString();
 		}
 		else {
+			
 			options.add("No options");
 		}
 		

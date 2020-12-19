@@ -73,10 +73,13 @@ public class Options {
 	
 
 	public List<String> getOptionsString(){
+		ArrayList<String> los = new ArrayList<String>();
+		for(Option p : options) {
+			los.add(p.toString());
+		}
+		return los;
 		
 		
-		
-		return null;
 	}
 	
 	
@@ -109,11 +112,65 @@ public class Options {
 			case 1:
 				s = "(1) No operation";
 				break;
-	
+				
+			case 2:
+				s = "(2) Maximum Segment Size(MSS)";
+				break;	
+				
+			case 3:
+				s = "(3) WSOPT-Window Scale";
+				break;
+				
+			case 4:
+				s = "(4) SACK Permitted";
+				break;	
+			
+			case 5:
+				s = "(5) SACK (Selective ACK)";
+				break;	
+				
+			case 6:
+				s = "(6) Echo ";
+				break;
+				
 			case 7:
 				s = "(7) Record route";
 				break;
+				
+			case 8:
+				s = "(8) TSOPT - Time Stamp Option";
+				break;
+				
+			case 9:
+				s = "(9) Partial Order Connection Permitted";
+				break;
 			
+			case 10:
+				s = "(10) Partial Order Service Profile ";
+				break;	
+			
+			case 11:
+				s = "(11) CC ";
+				break;
+			
+			case 12:
+				s = "(12) CC.NEW ";
+				break;
+				
+			case 13:
+				s = "(13) CC.ECHO ";
+				break;
+					
+			case 14:
+				s = "(14) TCP Alternate Checksum Request ";
+				break;
+				
+			case 15:
+				s = "(15) TCP Alternate Checksum Data  ";
+				break;
+					
+				
+				
 			case 68:
 				s = "(68) Time stamp";
 				break;

@@ -7,9 +7,12 @@ import java.util.List;
 public class TCP implements IProtocole {
 	private String src_port,dst_port,sq_Number,acknow_Number,data_offset,reserved;
 	private char urg,ack,psh,rst,syn,fin;
-	private String window,checksum,urgent_pointer,options,padding,data;
+	private String window,checksum,urgent_pointer,padding,data;
+	
+	private List<String> options; 
+
 	private List<String> octets; //données de IP
-	public TCP(IP ip) {
+	public TCP(IP ip) throws InvalidTrameException {
 		octets = ip.getData();
 		
 		src_port=octets.get(0)+octets.get(1);
@@ -43,9 +46,24 @@ public class TCP implements IProtocole {
 		urgent_pointer = octets.get(18)+octets.get(19);
 		// options a ameliorer  
 		int fin_options = 4*Convert.hex2dec(data_offset);
-		options = "";
+		
+		
+		
+		
+		options = new ArrayList<String>();
+		/*on a minimun un octet d'options*/
+		if(fin_options>20) {
+			options = new Options(octets.subList(20, fin_options), fin_options).getOptionsString();
+		}
+		else {
+			
+			options.add("No options");
+		}
+		
+		
+		//options = "";
 		data = "";
-		options += (fin_options -20); //a ameliorer
+		//options += (fin_options -20); //a ameliorer
 		padding = ""; //a ameliorer
 		data += (octets.size()-fin_options); // http ?
 	}
@@ -70,7 +88,15 @@ public class TCP implements IProtocole {
 	public boolean protocoleIsHttpResponse() {
 		return Convert.hex2dec(src_port) == 80;
 	}
-	
+	public String afficheOptions() {
+		String s = "";
+		for(String p : options) {
+			s+="\n\t\t";
+			s+=p;
+			
+		}
+		return s ; 
+	}
 	public String toString () {
 		String s = "Transmission Control Protocol (TCP)\n\t";
 		
@@ -90,7 +116,7 @@ public class TCP implements IProtocole {
 				+ "Checksum: 0x"+checksum+"\n\t"
 				+ "Urgent pointer: "+Convert.hex2dec(urgent_pointer)+"\n\t";
 				//facultatif:
-				s+="Options: "+options+"\n\t"
+				s+="Options: "+afficheOptions()+"\n\t"
 				+ "Padding: "+padding+" octets\n\t"
 				+ "Data: "+data+" octets\n\t";
 		
