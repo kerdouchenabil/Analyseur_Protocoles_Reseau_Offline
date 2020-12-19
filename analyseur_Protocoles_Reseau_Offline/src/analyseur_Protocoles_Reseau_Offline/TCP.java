@@ -72,7 +72,7 @@ public class TCP implements IProtocole {
 	}
 	
 	public String toString () {
-		String s = "TCP\n\t";
+		String s = "Transmission Control Protocol (TCP)\n\t";
 		
 		s +=  	"Source: "+Convert.hex2dec(src_port)+"\n\t"
 				+ "Destination: "+Convert.hex2dec(dst_port)+"\n\t"

@@ -37,16 +37,16 @@ public class Test {
 				System.out.println(ip);
 				
 				/* faire une vérification si protocole == tcp */
-				
-				TCP tcp = new TCP(ip);
-				System.out.println(tcp);
-
-				/* faire une vérification si protocole == http */
-				if(tcp.protocoleIsHttpRequest() || tcp.protocoleIsHttpResponse()) {
-					HTTP http = new HTTP(tcp);
-					System.out.println(http);
-				}
-				
+				if(ip.protocoleIsTcp()) {
+					TCP tcp = new TCP(ip);
+					System.out.println(tcp);
+	
+					/* faire une vérification si protocole == http */
+					if(tcp.protocoleIsHttpRequest() || tcp.protocoleIsHttpResponse()) {
+						HTTP http = new HTTP(tcp);
+						System.out.println(http);
+					}
+			}
 				
 			} catch (Exception e) {
 				e.printStackTrace();

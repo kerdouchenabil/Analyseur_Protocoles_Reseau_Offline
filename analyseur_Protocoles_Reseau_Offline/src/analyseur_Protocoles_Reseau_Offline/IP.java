@@ -12,11 +12,13 @@ public class IP implements IProtocole {
 	private String id, fragment_offset;
 	private String ttl, protocol, header_checksum;
 	private String source, dest;
-	private String options, padding, data;
+	private String data;
 	private List<String> octets;
 	private int tailleHeader, tailleOptions, tailleData; //header=entete+options=20+options
 	
 	private String fragment_offset_bin;
+	
+	private List<String> options; 
 
 	public IP(Ethernet eth) throws InvalidTrameException { //a partir de l'octet 14 après Ethernet
 		
@@ -27,7 +29,7 @@ public class IP implements IProtocole {
 		ihl=o.get(0).charAt(1);
 		tailleHeader = 4*Convert.hex2dec(""+ihl);
 		if(!headerLengthValid()) {
-			throw new InvalidTrameException("header length invalid, nombre d'octets insuffisant!");
+			throw new InvalidTrameException("IP: Header length invalid, nombre d'octets insuffisant!");
 		}
 		tailleOptions = tailleHeader-20;
 		
@@ -68,35 +70,20 @@ public class IP implements IProtocole {
 			if(i != 19) dest += ".";
 		}
 		
-		/*fin de l'entete IP (20oct), Options à suivre (max 40oct)*/
-		options = "";
-		int i=20; //debut des options
 		
-		while(i<tailleHeader) {
-			
-			// codés sur 1 octet chacun
-			String type = o.get(i);
-			String longueur = o.get(i+1);
-			String pointeur = o.get(i+2);
-			
-			// si longeur option==0 -> break
-			if(Convert.hex2dec(longueur)==0) {
-				break;
-			}
-			
-			options += type+"; "; //ajouter le type de l'option
-			
-			i += Convert.hex2dec(longueur); //aller a l'option suivante
-			
+		/*on a minimun un octet d'options*/
+		if(tailleHeader>20) {
+			options = new Options(octets.subList(20, tailleHeader), tailleHeader).getOptionsString();
+		}
+		else {
+			options.add("No options");
 		}
 		
-		//nombre d'octets de bourrage en decimal
-		padding = ""+(tailleHeader - i);
-		
-		//taille des data pour le moment
-		data = ""+tailleData;
-		
-	}
+			
+			//taille des data pour le moment
+			data = ""+tailleData;
+			
+		}
 	//en nb d'Octects 
 	public int getHeaderLength() {
 		return tailleHeader;
@@ -135,6 +122,25 @@ public class IP implements IProtocole {
 	public List<String> getData(){
 		return new ArrayList<>(octets.subList(4*Convert.hex2dec(""+ihl), octets.size()));
 	}
+	public boolean protocoleIsTcp() {
+		return Convert.hex2dec(protocol) == 6;
+	}
+	public String getProtocole() {
+		if(protocoleIsTcp()) { return "6 (TCP) ";}
+		if(Convert.hex2dec(protocol) == 1) {return "1 (ICMP)";}
+		if(Convert.hex2dec(protocol) == 17) {return "17 (UDP)";}
+		return "unknown protocol!";
+	}
+	
+	public String afficheOptions() {
+		String s = "";
+		for(String p : options) {
+			s+="\n\t\t";
+			s+=p;
+			
+		}
+		return s ; 
+	}
 	
 	public String toString() {
 		String s="Internet Protocol (IP)\n\t";
@@ -149,13 +155,12 @@ public class IP implements IProtocole {
 				+ "Flag More fragments: "+flag2_mf+"\n\t"
 				+ "Fragment offset: "+Convert.hex2dec(fragment_offset)+"(0b "+fragment_offset_bin+")\n\t"
 				+ "TTL: "+Convert.hex2dec(ttl)+"\n\t"
-				+ "Protocol: 0x"+protocol+" ("+Convert.hex2dec(protocol)+")\n\t" // a ameliorer
+				+ "Protocol: "+getProtocole()+"\n\t" // a ameliorer
 				+ "Header checksum: 0x"+header_checksum+" ("+Convert.hex2dec(header_checksum)+")\n\t"
 				+ "Source: "+source+"\n\t"
 				+ "Destination: "+dest+"\n\t";
 				//facultatif:
-				s+="Options: "+options+"\n\t"
-				+ "Padding: "+padding+" octets\n\t"
+				s+="Options: "+afficheOptions()+"\n\t"
 				+ "Data: "+data+" octets\n\t"
 				+"_______verification_______\n\t"
 				+ "checksum is valid: "+verifyCheckSum()+" \n\t";
