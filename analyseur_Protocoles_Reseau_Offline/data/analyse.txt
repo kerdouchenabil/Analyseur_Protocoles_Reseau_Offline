@@ -1,0 +1,52 @@
+Ethernet
+	Destination: 00:01:02:a5:fb:3a
+	Source: 00:01:02:a5:fc:8d
+	Type: IPv4 (0x0800)
+
+Internet Protocol (IP)
+	version: 4
+	Header Length: 20
+	TOS: 0
+	Total length: 60
+	Identification: 0xec26 (60454)
+	Flag reserved bit: 0
+	Flag Don't fragment: 1
+	Flag More fragments: 0
+	Fragment offset: 0(0b 0000000000000)
+	TTL: 64
+	Protocol: 6 (TCP) 
+	Header checksum: 0xcccd (52429)
+	Source: 10.33.182.182
+	Destination: 132.227.60.13
+	Options: 
+		No options
+	Data: 40 octets
+	_______verification_______
+	checksum is valid: true 
+	
+Transmission Control Protocol (TCP)
+	Source: 3765
+	Destination: 80
+	Sequence number: 0xa9559264
+	Acknowledgement number: 0x00000000
+	Data offset(THL): 40 octects
+	Reserved: 0
+	URG: 0 Urgent: Not set 
+	ACK: 0 Acknowledgment: Not set 
+	PSH: 0 Push: Not set 
+	RST: 0 Reset: Not set 
+	SYN: 1 Syn: Set 
+	FIN: 0 Fin: Not set 
+	Window: 16060
+	Checksum: 0xa374
+	Urgent pointer: 0
+	Options: 
+		(2) Maximum Segment Size(MSS); Length=4; Value=5
+		(4) SACK Permitted; Length=2; Value=8
+		(8) TSOPT - Time Stamp Option; Length=10; Value=8
+		(1) No operation; Length=1; Value=1
+		(3) WSOPT-Window Scale; Length=3; Value=0
+	Padding:  octets
+	Data: 0 octets
+	
+HTTP INVALIDE !
