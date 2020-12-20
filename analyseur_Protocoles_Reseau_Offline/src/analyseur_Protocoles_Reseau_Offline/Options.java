@@ -47,7 +47,7 @@ public class Options {
 
 			}
 		} catch (ArrayIndexOutOfBoundsException ae) {
-			throw new InvalidTrameException("IP: Option invalide");
+			throw new InvalidTrameException("IP: Invalid option");
 		}
 
 	}
@@ -159,7 +159,7 @@ public class Options {
 				break;
 
 			default:
-				s = "Unknown option !";
+				s = "Unknown option";
 				break;
 			}
 
@@ -176,7 +176,7 @@ public class Options {
 
 		public String toString() {
 			String s = "";
-			s += getType() + "; " + "Length=" + getLongueur() + "; Value=" + getValeur();
+			s += getType() + ": " + "Length=" + getLongueur() + "; Value=" + getValeur();
 			return s;
 		}
 	}

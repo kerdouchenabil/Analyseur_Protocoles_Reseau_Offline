@@ -22,13 +22,18 @@ public class IP implements IProtocole {
 	public IP(Ethernet eth) throws Exception { // a partir de l'octet 14 après Ethernet
 
 		octets = eth.getRemainingOctets();
+		
+		if(octets.size()<20) {
+			throw new InvalidTrameException("IP: Insufficient number of bytes ("+octets.size()+") !");
+		}
+		
 		List<String> o = octets;
 		version = o.get(0).charAt(0);
 
 		ihl = o.get(0).charAt(1);
 		tailleHeader = 4 * Convert.hex2dec("" + ihl);
 		if (!headerLengthValid()) {
-			throw new InvalidTrameException("IP: Header length invalid, nombre d'octets insuffisant!");
+			throw new InvalidTrameException("IP: Header length invalid ("+tailleHeader+"), insufficient number of bytes !");
 		}
 		tailleOptions = tailleHeader - 20;
 
@@ -170,7 +175,7 @@ public class IP implements IProtocole {
 				+ "Source: " + source + "\n\t" + "Destination: " + dest + "\n\t";
 		// facultatif:
 		s += "Options: " + afficheOptions() + "\n\t" + "Data: " + data + " octets\n\t"
-				+ "_______verification_______\n\t"
+				+ "_______verifications_______\n\t"
 				+ "IP version validity: "+verifyVersion()+"\n\t" 
 				+ "checksum validity: " + verifyCheckSum() + " \n\t"
 				+ "";

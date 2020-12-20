@@ -15,6 +15,10 @@ public class TCP implements IProtocole {
 	public TCP(IP ip) throws InvalidTrameException {
 		octets = ip.getData();
 		
+		if(octets.size()<20) {
+			throw new InvalidTrameException("TCP: Insufficient number of bytes ("+octets.size()+") !");
+		}
+		
 		src_port=octets.get(0)+octets.get(1);
 		dst_port=octets.get(2)+octets.get(3);
 		sq_Number="";
@@ -47,9 +51,6 @@ public class TCP implements IProtocole {
 		// options a ameliorer  
 		int fin_options = 4*Convert.hex2dec(data_offset);
 		
-		
-		
-		
 		options = new ArrayList<String>();
 		/*on a minimun un octet d'options*/
 		if(fin_options>20) {
@@ -59,7 +60,6 @@ public class TCP implements IProtocole {
 			
 			options.add("No options");
 		}
-		
 		
 		//options = "";
 		data = "";

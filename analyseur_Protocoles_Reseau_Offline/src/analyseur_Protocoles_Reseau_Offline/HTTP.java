@@ -71,7 +71,7 @@ public class HTTP implements IProtocole {
 				
 			}
 		}catch (IndexOutOfBoundsException ee) {
-			throw new InvalidTrameException("entete HTTP Invalide !!");
+			throw new InvalidTrameException("HTTP Invalid !");
 		}
 	}
 	
