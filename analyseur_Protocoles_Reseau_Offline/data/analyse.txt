@@ -1,52 +1,85 @@
+---------- TRAME 1 ----------
 Ethernet
-	Destination: 00:01:02:a5:fb:3a
-	Source: 00:01:02:a5:fc:8d
+	Destination: 00:11:22:33:44:55
+	Source: 66:77:88:99:aa:bb
 	Type: IPv4 (0x0800)
 
 Internet Protocol (IP)
-	version: 4
-	Header Length: 20
-	TOS: 0
-	Total length: 60
-	Identification: 0xec26 (60454)
+	version: 14
+	Header Length: 56
+	TOS: 255
+	Total length: 274
+	Identification: 0x2334 (9012)
 	Flag reserved bit: 0
 	Flag Don't fragment: 1
 	Flag More fragments: 0
-	Fragment offset: 0(0b 0000000000000)
-	TTL: 64
-	Protocol: 6 (TCP) 
-	Header checksum: 0xcccd (52429)
-	Source: 10.33.182.182
-	Destination: 132.227.60.13
+	Fragment offset: 1366(0b 0010101010110)
+	TTL: 102
+	Protocol: unknown protocol!
+	Header checksum: 0x8899 (34969)
+	Source: 170.187.204.221
+	Destination: 238.255.0.17
 	Options: 
-		No options
-	Data: 40 octets
+		Unknown option !; Length=51; Value=68
+	Data: 218 octets
 	_______verification_______
-	checksum is valid: true 
+	IP version validity: false
+	checksum validity: false 
 	
-Transmission Control Protocol (TCP)
-	Source: 3765
-	Destination: 80
-	Sequence number: 0xa9559264
-	Acknowledgement number: 0x00000000
-	Data offset(THL): 40 octects
-	Reserved: 0
-	URG: 0 Urgent: Not set 
-	ACK: 0 Acknowledgment: Not set 
-	PSH: 0 Push: Not set 
-	RST: 0 Reset: Not set 
-	SYN: 1 Syn: Set 
-	FIN: 0 Fin: Not set 
-	Window: 16060
-	Checksum: 0xa374
-	Urgent pointer: 0
+---------- TRAME 2 ----------
+Ethernet
+	Destination: 00:11:22:33:44:55
+	Source: 66:77:88:99:aa:bb
+	Type: IPv4 (0x0800)
+
+Internet Protocol (IP)
+	version: 14
+	Header Length: 56
+	TOS: 255
+	Total length: 274
+	Identification: 0x2334 (9012)
+	Flag reserved bit: 0
+	Flag Don't fragment: 1
+	Flag More fragments: 0
+	Fragment offset: 1366(0b 0010101010110)
+	TTL: 102
+	Protocol: unknown protocol!
+	Header checksum: 0x8899 (34969)
+	Source: 170.187.204.221
+	Destination: 238.255.0.17
 	Options: 
-		(2) Maximum Segment Size(MSS); Length=4; Value=5
-		(4) SACK Permitted; Length=2; Value=8
-		(8) TSOPT - Time Stamp Option; Length=10; Value=8
-		(1) No operation; Length=1; Value=1
-		(3) WSOPT-Window Scale; Length=3; Value=0
-	Padding:  octets
-	Data: 0 octets
+		Unknown option !; Length=51; Value=68
+	Data: 218 octets
+	_______verification_______
+	IP version validity: false
+	checksum validity: false 
 	
-HTTP INVALIDE !
+---------- TRAME 3 ----------
+Ethernet
+	Destination: 00:11:22:33:44:55
+	Source: 66:77:88:99:aa:bb
+	Type: IPv4 (0x0800)
+
+Internet Protocol (IP)
+	version: 14
+	Header Length: 56
+	TOS: 255
+	Total length: 274
+	Identification: 0x2334 (9012)
+	Flag reserved bit: 0
+	Flag Don't fragment: 1
+	Flag More fragments: 0
+	Fragment offset: 1366(0b 0010101010110)
+	TTL: 102
+	Protocol: unknown protocol!
+	Header checksum: 0x8899 (34969)
+	Source: 170.187.204.221
+	Destination: 238.255.0.17
+	Options: 
+		Unknown option !; Length=51; Value=68
+	Data: 218 octets
+	_______verification_______
+	IP version validity: false
+	checksum validity: false 
+	
+

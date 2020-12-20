@@ -1,0 +1,85 @@
+---------- TRAME 1 ----------
+Ethernet
+	Destination: 00:11:22:33:44:55
+	Source: 66:77:88:99:aa:bb
+	Type: IPv4 (0x0800)
+
+Internet Protocol (IP)
+	version: 14
+	Header Length: 56
+	TOS: 255
+	Total length: 274
+	Identification: 0x2334 (9012)
+	Flag reserved bit: 0
+	Flag Don't fragment: 1
+	Flag More fragments: 0
+	Fragment offset: 1366(0b 0010101010110)
+	TTL: 102
+	Protocol: unknown protocol!
+	Header checksum: 0x8899 (34969)
+	Source: 170.187.204.221
+	Destination: 238.255.0.17
+	Options: 
+		Unknown option !; Length=51; Value=68
+	Data: 218 octets
+	_______verification_______
+	IP version validity: false
+	checksum validity: false 
+	
+---------- TRAME 2 ----------
+Ethernet
+	Destination: 00:11:22:33:44:55
+	Source: 66:77:88:99:aa:bb
+	Type: IPv4 (0x0800)
+
+Internet Protocol (IP)
+	version: 14
+	Header Length: 56
+	TOS: 255
+	Total length: 274
+	Identification: 0x2334 (9012)
+	Flag reserved bit: 0
+	Flag Don't fragment: 1
+	Flag More fragments: 0
+	Fragment offset: 1366(0b 0010101010110)
+	TTL: 102
+	Protocol: unknown protocol!
+	Header checksum: 0x8899 (34969)
+	Source: 170.187.204.221
+	Destination: 238.255.0.17
+	Options: 
+		Unknown option !; Length=51; Value=68
+	Data: 218 octets
+	_______verification_______
+	IP version validity: false
+	checksum validity: false 
+	
+---------- TRAME 3 ----------
+Ethernet
+	Destination: 00:11:22:33:44:55
+	Source: 66:77:88:99:aa:bb
+	Type: IPv4 (0x0800)
+
+Internet Protocol (IP)
+	version: 14
+	Header Length: 56
+	TOS: 255
+	Total length: 274
+	Identification: 0x2334 (9012)
+	Flag reserved bit: 0
+	Flag Don't fragment: 1
+	Flag More fragments: 0
+	Fragment offset: 1366(0b 0010101010110)
+	TTL: 102
+	Protocol: unknown protocol!
+	Header checksum: 0x8899 (34969)
+	Source: 170.187.204.221
+	Destination: 238.255.0.17
+	Options: 
+		Unknown option !; Length=51; Value=68
+	Data: 218 octets
+	_______verification_______
+	IP version validity: false
+	checksum validity: false 
+	
+

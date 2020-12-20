@@ -16,15 +16,40 @@ d0 01 12 23 34 45 56 66 77 88 99 aa bb cc dd ee ff
 e0 00 11 22 33 44 55 66 77 88 99 aa bb 08 00 ee ff
 f0 01 12 23 34 45 56 66 77 88 99 aa bb cc dd ee ff
 
-00 00 01 02 a5 fb 3a 00 01 02 a5 fc 8d 08 00 45 00
-10 00 3c ec 26 40 00 40 06 cc cd 0a 21 b6 b6 84 e3
-20 3c 0d 0e b5 00 50 a9 55 92 64 00 00 00 00 a0 02
-30 3e bc a3 74 00 00 02 04 05 b4 04 02 08 0a 08 39
-40 91 16 00 00 00 00 01 03 03 00
+
+00 00 11 22 33 44 55 66 77 88 99 aa bb 08 00 ee ff
+10 01 12 23 34 45 56 66 77 88 99 aa bb cc dd ee ff gerer les lignes vides !!
+   hhhhhhc  ffksdkff fksksksslq  kddkl
+20 00 11 22 33 44 55 66 77 88 99 aa bb 08 00 ee ff
+30 01 12 23 34 45 56 66 77 88 99 aa bb cc dd ee ff
+40 00 11 22 33 44 55 66 77 88 99 aa bb 08 00 ee ff
+50 01 12 23 34 45 56 66 77 88 99 aa bb cc dd ee ff
+60 00 11 22 33 44 55 66 77 88 99 aa bb 08 00 ee ff
+70 01 12 23 34 45 56 66 77 88 99 aa bb cc dd ee ff
+80 00 11 22 33 44 55 66 77 88 99 aa bb 08 00 ee ff
+90 01 12 23 34 45 56 66 77 88 99 aa bb cc dd ee ff
+a0 00 11 22 33 44 55 66 77 88 99 aa bb 08 00 ee ff
+b0 01 12 23 34 45 56 66 77 88 99 aa bb cc dd ee ff
+c0 00 11 22 33 44 55 66 77 88 99 aa bb 08 00 ee ff
+d0 01 12 23 34 45 56 66 77 88 99 aa bb cc dd ee ff
+e0 00 11 22 33 44 55 66 77 88 99 aa bb 08 00 ee ff
+f0 01 12 23 34 45 56 66 77 88 99 aa bb cc dd ee ff
 
 
-trame2 TCP _______________________________________
-00 08 00 20 87 b0 44 08 00 11 08 c0 63 08 00 45 00
-10 00 48 49 ba 00 00 1e 06 69 8d c1 37 33 f6 c1 37
-20 33 04 17 70 96 d4 39 7f 84 c2 bf 3a 21 fd 50 18
-30 11 1c 99 bc
+00 00 11 22 33 44 55 66 77 88 99 aa bb 08 00 ee ff
+10 01 12 23 34 45 56 66 77 88 99 aa bb cc dd ee ff gerer les lignes vides !!
+   hhhhhhc  ffksdkff fksksksslq  kddkl
+20 00 11 22 33 44 55 66 77 88 99 aa bb 08 00 ee ff
+30 01 12 23 34 45 56 66 77 88 99 aa bb cc dd ee ff
+40 00 11 22 33 44 55 66 77 88 99 aa bb 08 00 ee ff
+50 01 12 23 34 45 56 66 77 88 99 aa bb cc dd ee ff
+60 00 11 22 33 44 55 66 77 88 99 aa bb 08 00 ee ff
+70 01 12 23 34 45 56 66 77 88 99 aa bb cc dd ee ff
+80 00 11 22 33 44 55 66 77 88 99 aa bb 08 00 ee ff
+90 01 12 23 34 45 56 66 77 88 99 aa bb cc dd ee ff
+a0 00 11 22 33 44 55 66 77 88 99 aa bb 08 00 ee ff
+b0 01 12 23 34 45 56 66 77 88 99 aa bb cc dd ee ff
+c0 00 11 22 33 44 55 66 77 88 99 aa bb 08 00 ee ff
+d0 01 12 23 34 45 56 66 77 88 99 aa bb cc dd ee ff
+e0 00 11 22 33 44 55 66 77 88 99 aa bb 08 00 ee ff
+f0 01 12 23 34 45 56 66 77 88 99 aa bb cc dd ee ff

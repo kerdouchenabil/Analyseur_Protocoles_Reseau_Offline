@@ -9,7 +9,7 @@ public class Ethernet {
 	//private IProtocole protocole;
 	private Trame trame;
 
-	public Ethernet(Trame trame) throws Exception {
+	public Ethernet(Trame trame) throws InvalidTrameException {
 		this.trame = trame;
 		
 		dest = "";
@@ -32,16 +32,18 @@ public class Ethernet {
 		
 		switch (type) { //////////// numeros a verifier http et tcp
 			case "0800": proto_name="IPv4"; /*protocole=new IP(trame.getOctets().subList(14, trame.size()));*/ break;
-			case "8080": proto_name="TCP"; /*protocole=new TCP(trame.getOctets().subList(14, trame.size()));*/ break;
-			case "0000": proto_name="HTTP"; /*protocole=new HTTP(trame.getOctets().subList(14, trame.size()));*/ break;
 			
 			case "0806": proto_name="ARP"; break;
 			//autres facultatifs...
 			
 			default:
-				throw new Exception("type protocole invalide !");
+				proto_name = "Unknown Protocol !";
 		}
 		
+	}
+	
+	public boolean protocoleIsIP () {
+		return type.equals("0800");
 	}
 	
 	/*retourne les octets restants à envoter au protocole, (a partir de 14)*/
