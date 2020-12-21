@@ -39,10 +39,16 @@ public class Options {
 				}
 
 				String longueur = o.get(i + 1);
+				
 				String pointeur = o.get(i + 2);
 
 				options.add(new Option(type, longueur, pointeur)); // ajouter le type de l'option
-
+				
+				
+				if(Convert.hex2dec(longueur) > 40) {
+					
+					break;//important 
+				}
 				i += Convert.hex2dec(longueur); // aller a l'option suivante
 
 			}
@@ -176,7 +182,16 @@ public class Options {
 
 		public String toString() {
 			String s = "";
-			s += getType() + ": " + "Length=" + getLongueur() + "; Value=" + getValeur();
+			if(type ==  1) {
+				s += getType() + ": " + "Length=" + getLongueur() ;
+				return s ;
+			}
+			if(longueur > 40) {
+				s += getType() + ": " + "Length=" + "invalid length ("+longueur + "); Pointer=" + getValeur();
+				return s;
+				
+			}
+			s += getType() + ": " + "Length=" + getLongueur() + "; Pointer=" + getValeur();
 			return s;
 		}
 	}

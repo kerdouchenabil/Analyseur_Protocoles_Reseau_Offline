@@ -33,14 +33,14 @@ public class IP implements IProtocole {
 		ihl = o.get(0).charAt(1);
 		tailleHeader = 4 * Convert.hex2dec("" + ihl);
 		if (!headerLengthValid()) {
-			throw new InvalidTrameException("IP: Header length invalid ("+tailleHeader+"), insufficient number of bytes !");
+			throw new InvalidTrameException("IP: Header length invalid ("+tailleHeader+"), number of bytes invalid !");
 		}
 		tailleOptions = tailleHeader - 20;
 
 		tos = o.get(1);
 
 		total_length = o.get(2) + o.get(3);
-		tailleData = Convert.hex2dec(total_length) - tailleHeader;
+		tailleData = (octets.size()) - tailleHeader;
 
 		id = o.get(4) + o.get(5);
 
@@ -123,7 +123,7 @@ public class IP implements IProtocole {
 	}
 
 	public boolean headerLengthValid() {
-		return octets.size() >= tailleHeader;
+		return tailleHeader >=20 && tailleHeader<=60;
 	}
 
 	public List<String> getData() {
@@ -144,7 +144,7 @@ public class IP implements IProtocole {
 		if (Convert.hex2dec(protocol) == 17) {
 			return "17 (UDP)";
 		}
-		return "unknown protocol!";
+		return "Unknown protocol";
 	}
 
 	public String afficheOptions() {
@@ -160,7 +160,9 @@ public class IP implements IProtocole {
 	public boolean verifyVersion() {
 		return ((Convert.hex2dec(""+version))==4);
 	}
-
+	public boolean verifylength() {
+		return octets.size() == Convert.hex2dec(total_length);
+	}
 	public String toString() {
 		String s = "Internet Protocol (IP)\n\t";
 
@@ -178,7 +180,7 @@ public class IP implements IProtocole {
 				+ "_______verifications_______\n\t"
 				+ "IP version validity: "+verifyVersion()+"\n\t" 
 				+ "checksum validity: " + verifyCheckSum() + " \n\t"
-				+ "";
+				+ "total length validity: "+ verifylength()+ " \n\t";
 
 		return s;
 	}

@@ -219,86 +219,108 @@ public class Analyseur extends Application {
 		Trace trace;
 		StringBuilder res = new StringBuilder();// sortie
 
-		try {
+		List<Trame> trames = null;
+		
+		
+			try {
+				trace = new Trace(inputFileName);
+				
+				// creation des trames
+				trames = Filtre.filtrer(trace);
+				
+				// affichage des trames (mettre en comment)
+				/*
+				 * for(Trame t : trames) { System.out.println(t); }
+				 */
+				
+			} catch (IOException e1) {
+				e1.printStackTrace();
+				System.out.println("Error when reading file");
+			}
 
-			trace = new Trace(inputFileName);
 
-			// creation des trames
-			List<Trame> trames = Filtre.filtrer(trace);
 
-			// affichage des trames (mettre en comment)
-			/*
-			 * for(Trame t : trames) { System.out.println(t); }
-			 */
+
+			
+		
+			
 
 			// analyse des trames
 			int cpt = 0;
 			for (Trame t : trames) {
-				// System.out.println("---------- TRAME " + (++cpt) + " ----------");
-				res.append("\n*** TRAME " + (++cpt) + " ***");
-				res.append("\n");
-
-				Ethernet eth = new Ethernet(t);
-				// System.out.println(eth);
-				res.append(eth.toString());
-				res.append("\n");
-
-				/* faire une vérification si protocole == ip */
-				if (eth.protocoleIsIP()) {
-
-					IP ip = new IP(eth);
-					// System.out.println(ip);
-					res.append(ip);
+				
+				try {
+				
+					// System.out.println("---------- TRAME " + (++cpt) + " ----------");
+					res.append("\n*** TRAME " + (++cpt) + " ***");
 					res.append("\n");
-
-					/* faire une vérification si protocole == tcp */
-					if (ip.protocoleIsTcp()) {
-
-						TCP tcp = new TCP(ip);
-						// System.out.println(tcp);
-						res.append(tcp);
+	
+					Ethernet eth = new Ethernet(t);
+					// System.out.println(eth);
+					res.append(eth.toString());
+					res.append("\n");
+	
+					/* faire une vérification si protocole == ip */
+					if (eth.protocoleIsIP()) {
+	
+						IP ip = new IP(eth);
+						// System.out.println(ip);
+						res.append(ip);
 						res.append("\n");
-
-						/* faire une vérification si protocole == http */
-						if (tcp.protocoleIsHttpRequest() || tcp.protocoleIsHttpResponse()) {
-
-							HTTP http = new HTTP(tcp);
-							// System.out.println(http);
-							res.append(http);
+	
+						/* faire une vérification si protocole == tcp */
+						if (ip.protocoleIsTcp()) {
+	
+							TCP tcp = new TCP(ip);
+							// System.out.println(tcp);
+							res.append(tcp);
 							res.append("\n");
+	
+							/* faire une vérification si protocole == http */
+							if (tcp.protocoleIsHttpRequest() || tcp.protocoleIsHttpResponse()) {
+	
+								HTTP http = new HTTP(tcp);
+								// System.out.println(http);
+								res.append(http);
+								res.append("\n");
+							}
 						}
 					}
+				
+				
+				} catch (InvalidTrameException ite) { 
+					//ite.printStackTrace();
+					System.out.println(ite.getMessage());
+					res.append(ite.getMessage());
+					res.append("\n");
+	
+				} catch (FileNotFoundException fnf) {
+					fnf.printStackTrace();
+					System.out.println("Fichier introuvable !");
+					res.append(fnf.getMessage());
+					res.append("\n");
+	
+				} catch (IOException io) {
+					io.printStackTrace();
+					System.out.println("Erreur lors de la lecture du fichier !");
+					res.append(io.getMessage());
+					res.append("\n");
+	
+				} catch (Exception e) {
+					e.printStackTrace();
+					System.out.println("Erreur inconnue !");
+					res.append(e.getMessage());
+					res.append("\n");
+	
+				} finally {
+					res.append("\n");
+					//return res.toString();
 				}
-			}
+					
+				
+			}/////fin for
 
-		} catch (InvalidTrameException ite) { 
-			//ite.printStackTrace();
-			System.out.println(ite.getMessage());
-			res.append(ite.getMessage());
-			res.append("\n");
-
-		} catch (FileNotFoundException fnf) {
-			fnf.printStackTrace();
-			System.out.println("Fichier introuvable !");
-			res.append(fnf.getMessage());
-			res.append("\n");
-
-		} catch (IOException io) {
-			io.printStackTrace();
-			System.out.println("Erreur lors de la lecture du fichier !");
-			res.append(io.getMessage());
-			res.append("\n");
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("Erreur inconnue !");
-			res.append(e.getMessage());
-			res.append("\n");
-
-		} finally {
-			res.append("\n");
 			return res.toString();
-		}
 
 	}
 

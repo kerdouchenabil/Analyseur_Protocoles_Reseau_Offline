@@ -8,6 +8,7 @@ public class TCP implements IProtocole {
 	private String src_port,dst_port,sq_Number,acknow_Number,data_offset,reserved;
 	private char urg,ack,psh,rst,syn,fin;
 	private String window,checksum,urgent_pointer,padding,data;
+	private int tailleHeader;
 	
 	private List<String> options; 
 
@@ -32,6 +33,12 @@ public class TCP implements IProtocole {
 		
 		data_offset="";
 		data_offset+=octets.get(12).charAt(0);
+		tailleHeader = Convert.hex2dec(data_offset)*4;
+		
+		if (!headerLengthValid()) {
+			throw new InvalidTrameException("TCP: Header length invalid ("+tailleHeader+"), number of bytes invalid !");
+		}
+		
 		
 		String reserved_flags=octets.get(12).charAt(1)+octets.get(13);
 		String reserved_flag_sbin =Convert.hex2bin(reserved_flags) ;
@@ -97,6 +104,11 @@ public class TCP implements IProtocole {
 		}
 		return s ; 
 	}
+	
+	public boolean headerLengthValid() {
+		return tailleHeader >=20 && tailleHeader<=60;
+	}	
+	
 	public String toString () {
 		String s = "Transmission Control Protocol (TCP)\n\t";
 		
@@ -117,7 +129,6 @@ public class TCP implements IProtocole {
 				+ "Urgent pointer: "+Convert.hex2dec(urgent_pointer)+"\n\t";
 				//facultatif:
 				s+="Options: "+afficheOptions()+"\n\t"
-				+ "Padding: "+padding+" octets\n\t"
 				+ "Data: "+data+" octets\n\t";
 		
 		return s;

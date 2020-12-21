@@ -56,6 +56,7 @@ public class HTTP implements IProtocole {
 			while( ! ( (octets.get(i).equals("0d"))&&(octets.get(i+1).equals("0a")))){//&&(octets.get(i+2).equals("0d"))&&(octets.get(i+3).equals("0a")))) {
 				//si fin des lignes
 				String champ="";
+				//System.out.println("i="+i+"  octet(i)="+octets.get(i));////////////////////////
 				for(; ! octets.get(i).equals("20") ; i++) {
 					champ+=Convert.ascii2char(octets.get(i));
 				}
@@ -71,6 +72,7 @@ public class HTTP implements IProtocole {
 				
 			}
 		}catch (IndexOutOfBoundsException ee) {
+			//ee.printStackTrace();
 			throw new InvalidTrameException("HTTP Invalid !");
 		}
 	}
@@ -102,10 +104,10 @@ public class HTTP implements IProtocole {
 				+ "Request URI: "+url+"\n\t"
 				+ "Request Version: "+version+"\n\t";
 		}
-		else {
-			s += "Response method: "+methode+"\n\t"
+		else {//http response
+			s += "Response version: "+version+"\n\t"
 				+ "Response Statut Code: "+code_statut+"\n\t"
-				+ "[Status code Description: ]\n\t"
+				//+ "[Status code Description: ]\n\t"
 				+ "Response Phrase "+message+"\n\t";
 		}
 		
