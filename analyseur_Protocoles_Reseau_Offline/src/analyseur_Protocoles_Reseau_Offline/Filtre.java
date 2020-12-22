@@ -53,7 +53,7 @@ public class Filtre {
 				lastTrame = trames.get(trames.size()-1); //derniere trame
 				//si l'offset ne correspond pas -> ignorer la ligne
 				if(Integer.parseInt(octets[0], 16) != lastTrame.size()) {
-					System.out.println("continue: octet= "+Integer.parseInt(octets[0], 16)+" last trame size= "+lastTrame.size());
+					//System.out.println("continue: octet= "+Integer.parseInt(octets[0], 16)+" last trame size= "+lastTrame.size());
 					continue;
 				}
 			}

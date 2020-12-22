@@ -72,8 +72,8 @@ public class HTTP implements IProtocole {
 				
 			}
 		}catch (IndexOutOfBoundsException ee) {
-			//ee.printStackTrace();
-			throw new InvalidTrameException("HTTP Invalid !");
+			
+			throw new InvalidTrameException("HTTP Invalid (incomplete) !");
 		}
 	}
 	

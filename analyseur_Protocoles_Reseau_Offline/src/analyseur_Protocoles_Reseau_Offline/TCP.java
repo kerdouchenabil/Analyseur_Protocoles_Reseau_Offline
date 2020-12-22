@@ -3,16 +3,17 @@ package analyseur_Protocoles_Reseau_Offline;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class TCP implements IProtocole {
+	
 	private String src_port,dst_port,sq_Number,acknow_Number,data_offset,reserved;
 	private char urg,ack,psh,rst,syn,fin;
 	private String window,checksum,urgent_pointer,padding,data;
 	private int tailleHeader;
 	
 	private List<String> options; 
-
 	private List<String> octets; //données de IP
+	public static int nb = 1;
+	
 	public TCP(IP ip) throws InvalidTrameException {
 		octets = ip.getData();
 		
@@ -107,15 +108,31 @@ public class TCP implements IProtocole {
 	
 	public boolean headerLengthValid() {
 		return tailleHeader >=20 && tailleHeader<=60;
-	}	
+	}
+	
+	public String relativeSequenceNumber(){
+		if (syn=='0') {
+			nb=1;
+			return "n°"+nb+" New connexion segment";
+		}else {
+			nb++;
+			return "n°"+nb+" Current session segment";
+		}
+	}
+	
+	private String relativeACKnb(){
+		return "Waiting for segment n°"+(nb+1)+" ";
+	}
 	
 	public String toString () {
 		String s = "Transmission Control Protocol (TCP)\n\t";
 		
 		s +=  	"Source: "+Convert.hex2dec(src_port)+"\n\t"
 				+ "Destination: "+Convert.hex2dec(dst_port)+"\n\t"
-				+ "Sequence number: 0x"+sq_Number+"\n\t"//Convert.hex2dec(""+sq_Number)+"\n\t"
-				+ "Acknowledgement number: 0x"+(acknow_Number)+"\n\t"//+Convert.hex2dec(acknow_Number)+"\n\t"
+				+ "Sequence number: 0x"+sq_Number+"\n\t"
+				+ "Relative Sequence Number: "+relativeSequenceNumber()+"\n\t"//Convert.hex2dec(""+sq_Number)+"\n\t"
+				+ "Acknowledgement number: 0x"+(acknow_Number)+"\n\t"
+				+ "Relative ACK number: "+relativeACKnb()+"\n\t"//+Convert.hex2dec(acknow_Number)+"\n\t"
 				+ "Data offset(THL): "+4*Convert.hex2dec(data_offset)+" octects\n\t"
 				+ "Reserved: "+reserved+"\n\t"
 				+ "URG: "+urg+" Urgent:"+Convert.Flag(urg)+"\n\t"

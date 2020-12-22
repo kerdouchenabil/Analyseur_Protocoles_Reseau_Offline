@@ -295,26 +295,25 @@ public class Analyseur extends Application {
 					res.append("\n");
 	
 				} catch (FileNotFoundException fnf) {
-					fnf.printStackTrace();
+					//fnf.printStackTrace();
 					System.out.println("Fichier introuvable !");
 					res.append(fnf.getMessage());
 					res.append("\n");
 	
 				} catch (IOException io) {
-					io.printStackTrace();
+					//io.printStackTrace();
 					System.out.println("Erreur lors de la lecture du fichier !");
 					res.append(io.getMessage());
 					res.append("\n");
 	
 				} catch (Exception e) {
-					e.printStackTrace();
+					//e.printStackTrace();
 					System.out.println("Erreur inconnue !");
 					res.append(e.getMessage());
 					res.append("\n");
 	
 				} finally {
 					res.append("\n");
-					//return res.toString();
 				}
 					
 				

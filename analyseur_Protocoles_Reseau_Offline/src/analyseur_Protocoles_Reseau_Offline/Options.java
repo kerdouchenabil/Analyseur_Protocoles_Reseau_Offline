@@ -41,14 +41,20 @@ public class Options {
 				String longueur = o.get(i + 1);
 				
 				String pointeur = o.get(i + 2);
-
-				options.add(new Option(type, longueur, pointeur)); // ajouter le type de l'option
 				
+				if(Convert.hex2dec(longueur)>3 ) {
+					List<String> list = o.subList(i+3, i+Convert.hex2dec(longueur)); ///
+					options.add(new Option(type, longueur, pointeur, list)); // ajouter des octets pour le traitement
+				}
+				else {
+					options.add(new Option(type, longueur, pointeur)); // ajouter le type de l'option sans la liste
+				}
 				
 				if(Convert.hex2dec(longueur) > 40) {
 					
 					break;//important 
 				}
+				
 				i += Convert.hex2dec(longueur); // aller a l'option suivante
 
 			}
@@ -71,14 +77,25 @@ public class Options {
 
 		private int type;
 		private int longueur;
-		private int valeur;
+		private int pointeur;
+		private String p ;
+		private List<String> list;
 		/* ajouter uen liste d'octets si on veut ameliorer et traiter l'option */
 
 		public Option(String t, String l, String v) {
 			type = Convert.hex2dec(t);
 			longueur = Convert.hex2dec(l);
-			valeur = Convert.hex2dec(v);
+			pointeur = Convert.hex2dec(v);
+			p = v;
 			/* init la liste si amelioration */
+		}
+		
+		public Option(String t, String l, String v, List<String> lis) {
+			type = Convert.hex2dec(t);
+			longueur = Convert.hex2dec(l);
+			pointeur = Convert.hex2dec(v);
+			list = lis;
+			p = v;
 		}
 
 		/**
@@ -177,7 +194,59 @@ public class Options {
 		}
 
 		public int getValeur() {
-			return valeur;
+			return pointeur;
+		}
+		
+		public String getRecordRoute() {
+			if(list==null) return "";
+			
+			String r = "\t";
+			
+			if((longueur-3)%4 == 0) {
+				for (int i = 0; i < list.size(); i+=4) {
+					for (int j = 0; j < 4; j++) {
+						r += Convert.hex2dec(list.get(i+j));
+						if (j!=3) r += ".";
+					}
+					r+="\n\t\t\t";
+				}
+			}
+			else {
+				r+="\tIncomplete option IP adresses";
+			}
+			
+			return r;
+		}
+		
+		public String getTimeStamp() {
+			if(list==null) return "";
+			list.add(0, p);
+			String r = "";
+			
+			if(longueur==10) {
+				r+="\tTSV: 0x"+list.get(0)+list.get(1)+list.get(2)+list.get(3)
+				+ "\n\t\t\tTERV: 0x"+list.get(4)+list.get(5)+list.get(6)+list.get(7);
+			}
+			else {
+				r+="\tIncomplete Time Stamp";
+			}
+			
+			return r;
+		}
+		
+		public String getMSS() {
+			if(list==null) return "";
+			//list.add(0, p);
+			String r = "";
+			
+			if(longueur==4) {
+				r+="\tMSS: 0x"+p+list.get(0) + " ("+Convert.hex2dec(p+list.get(0))+")";
+			}
+			else {
+				r+="\tIvalid MSS length";
+			}
+			
+			return r;
 		}
 
 		public String toString() {
@@ -189,8 +258,29 @@ public class Options {
 			if(longueur > 40) {
 				s += getType() + ": " + "Length=" + "invalid length ("+longueur + "); Pointer=" + getValeur();
 				return s;
-				
 			}
+			
+			/*traitement options*/
+			if(type ==  7) { //record route
+				s += getType() + ": " + "Length=" + getLongueur() + "; Pointer=" + getValeur() + "\n\t\t" + getRecordRoute();
+				return s ;
+			}
+			
+			if(type ==  8) { // TS
+				s += getType() + ": " + "Length=" + getLongueur() + "\n\t\t" + getTimeStamp();
+				return s ;
+			}
+			
+			if(type ==  2) { // MSS
+				s += getType() + ": " + "Length=" + getLongueur() + "\n\t\t" + getMSS();
+				return s ;
+			}
+			
+			if(type ==  3) { // Window
+				s += getType() + ": " + "Length=" + getLongueur() + "; Shift=" + getValeur();
+				return s ;
+			}
+			
 			s += getType() + ": " + "Length=" + getLongueur() + "; Pointer=" + getValeur();
 			return s;
 		}

@@ -20,73 +20,77 @@ public class IP implements IProtocole {
 	private List<String> options;
 
 	public IP(Ethernet eth) throws Exception { // a partir de l'octet 14 après Ethernet
+		try {
+			octets = eth.getRemainingOctets();
+			
+			if(octets.size()<20) {
+				throw new InvalidTrameException("IP: Insufficient number of bytes ("+octets.size()+") !");
+			}
+			
+			List<String> o = octets;
+			version = o.get(0).charAt(0);
 
-		octets = eth.getRemainingOctets();
-		
-		if(octets.size()<20) {
-			throw new InvalidTrameException("IP: Insufficient number of bytes ("+octets.size()+") !");
+			ihl = o.get(0).charAt(1);
+			tailleHeader = 4 * Convert.hex2dec("" + ihl);
+			if (!headerLengthValid()) {
+				throw new InvalidTrameException("IP: Header length invalid ("+tailleHeader+"), number of bytes invalid !");
+			}
+			tailleOptions = tailleHeader - 20;
+
+			tos = o.get(1);
+
+			total_length = o.get(2) + o.get(3);
+			tailleData = (octets.size()) - tailleHeader;
+
+			id = o.get(4) + o.get(5);
+
+			String flags_fo_hex = o.get(6) + o.get(7);
+			String flags_fo_bin = Convert.hex2bin(flags_fo_hex);
+			flags_fo_bin = Convert.adjustNumberLength(flags_fo_bin, 16);
+
+			flag0 = flags_fo_bin.charAt(0);
+			flag1_df = flags_fo_bin.charAt(1);
+			flag2_mf = flags_fo_bin.charAt(2);
+
+			String fo_bin = flags_fo_bin.substring(3);
+			fragment_offset = Convert.bin2hex(fo_bin); // stocké en hexa
+			fragment_offset_bin = fo_bin; // stocké en binaire juste pour voir sur 13bits
+
+			ttl = o.get(8);
+
+			protocol = o.get(9);
+
+			header_checksum = o.get(10) + o.get(11);
+
+			source = "";
+			for (int i = 12; i < 16; i++) {
+				source += Convert.hex2dec(o.get(i));
+				if (i != 15)
+					source += ".";
+			}
+
+			dest = "";
+			for (int i = 16; i < 20; i++) {
+				dest += Convert.hex2dec(o.get(i));
+				if (i != 19)
+					dest += ".";
+			}
+
+			options = new ArrayList<String>();
+			/* on a minimun un octet d'options */
+			if (tailleHeader > 20) {
+				options = new Options(octets.subList(20, tailleHeader), tailleHeader).getOptionsString();
+			} else {
+
+				options.add("No options");
+			}
+
+			// taille des data pour le moment
+			data = "" + tailleData;
 		}
-		
-		List<String> o = octets;
-		version = o.get(0).charAt(0);
-
-		ihl = o.get(0).charAt(1);
-		tailleHeader = 4 * Convert.hex2dec("" + ihl);
-		if (!headerLengthValid()) {
-			throw new InvalidTrameException("IP: Header length invalid ("+tailleHeader+"), number of bytes invalid !");
+		catch(Exception e){
+			throw new InvalidTrameException("IP invalid !");
 		}
-		tailleOptions = tailleHeader - 20;
-
-		tos = o.get(1);
-
-		total_length = o.get(2) + o.get(3);
-		tailleData = (octets.size()) - tailleHeader;
-
-		id = o.get(4) + o.get(5);
-
-		String flags_fo_hex = o.get(6) + o.get(7);
-		String flags_fo_bin = Convert.hex2bin(flags_fo_hex);
-		flags_fo_bin = Convert.adjustNumberLength(flags_fo_bin, 16);
-
-		flag0 = flags_fo_bin.charAt(0);
-		flag1_df = flags_fo_bin.charAt(1);
-		flag2_mf = flags_fo_bin.charAt(2);
-
-		String fo_bin = flags_fo_bin.substring(3);
-		fragment_offset = Convert.bin2hex(fo_bin); // stocké en hexa
-		fragment_offset_bin = fo_bin; // stocké en binaire juste pour voir sur 13bits
-
-		ttl = o.get(8);
-
-		protocol = o.get(9);
-
-		header_checksum = o.get(10) + o.get(11);
-
-		source = "";
-		for (int i = 12; i < 16; i++) {
-			source += Convert.hex2dec(o.get(i));
-			if (i != 15)
-				source += ".";
-		}
-
-		dest = "";
-		for (int i = 16; i < 20; i++) {
-			dest += Convert.hex2dec(o.get(i));
-			if (i != 19)
-				dest += ".";
-		}
-
-		options = new ArrayList<String>();
-		/* on a minimun un octet d'options */
-		if (tailleHeader > 20) {
-			options = new Options(octets.subList(20, tailleHeader), tailleHeader).getOptionsString();
-		} else {
-
-			options.add("No options");
-		}
-
-		// taille des data pour le moment
-		data = "" + tailleData;
 
 	}
 
@@ -160,9 +164,11 @@ public class IP implements IProtocole {
 	public boolean verifyVersion() {
 		return ((Convert.hex2dec(""+version))==4);
 	}
+	
 	public boolean verifylength() {
 		return octets.size() == Convert.hex2dec(total_length);
 	}
+	
 	public String toString() {
 		String s = "Internet Protocol (IP)\n\t";
 
@@ -171,8 +177,7 @@ public class IP implements IProtocole {
 				+ "\n\t" + "Identification: 0x" + id + " (" + Convert.hex2dec(id) + ")\n\t" + "Flag reserved bit: "
 				+ flag0 + "\n\t" + "Flag Don't fragment: " + flag1_df + "\n\t" + "Flag More fragments: " + flag2_mf
 				+ "\n\t" + "Fragment offset: " + Convert.hex2dec(fragment_offset) + "(0b " + fragment_offset_bin
-				+ ")\n\t" + "TTL: " + Convert.hex2dec(ttl) + "\n\t" + "Protocol: " + getProtocole() + "\n\t" // a
-																												// ameliorer
+				+ ")\n\t" + "TTL: " + Convert.hex2dec(ttl) + "\n\t" + "Protocol: " + getProtocole() + "\n\t" // a ameliorer
 				+ "Header checksum: 0x" + header_checksum + " (" + Convert.hex2dec(header_checksum) + ")\n\t"
 				+ "Source: " + source + "\n\t" + "Destination: " + dest + "\n\t";
 		// facultatif:
