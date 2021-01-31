@@ -1,0 +1,28 @@
+1: Environnement
+
+- Vous devez être sur un environnement linux
+- Avoir installé au préalable java (de préférence openJDK 14.0.1 ou supérieur)
+	-> afin de vérifier s'il est installé, tapez dans un terminal la commande:
+		java -version
+	->Si java n'est pas installé tapez dans un terminal les commandes:
+		sudo apt update
+		sudo apt install openjdk-14-jdk
+		
+2: Exécution
+
+- Allez dans le dossier application
+- ouvrir un terminal et taper la commande suivante pour donner le droit d'exécution au script:
+	chmod +x exec.sh
+- vous pouvez maintenant lancer l'analyseur avec la commande:
+	./exec.sh
+
+-> Si cela ne marche pas, tapez la commande suivante:
+	java --module-path ./jfx/ --add-modules javafx.base,javafx.controls,javafx.graphics -jar Network_protocol_analyser.jar
+
+3: Utilisation
+
+- Une fenêtre graphique devrait s'afficher, vous aurez donc 3 boutons à votre disposition
+-> Select file: pour sélectionner depuis votre machine le fichier à analyser
+-> Start analyse: pour lancer l'analyse du fichier sélectionné
+-> Save analyse: pour sauvegarder le résultat de l'analyse dans le dossier selectionné.
+	-> l'analyse sera sauvegardée dans un fichier " analyse.txt "

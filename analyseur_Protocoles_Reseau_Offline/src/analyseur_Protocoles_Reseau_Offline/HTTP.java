@@ -3,7 +3,7 @@ package analyseur_Protocoles_Reseau_Offline;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HTTP implements IProtocole {
+public class HTTP {
 	
 	private TCP tcp;
 	private List<String> octets;
@@ -21,14 +21,14 @@ public class HTTP implements IProtocole {
 		code_statut="";
 		message="";
 		try {
-			int i=0;
+			int i=1;
 			if(tcp.protocoleIsHttpRequest()) {
 				for(; ! octets.get(i).equals("20") ; i++) {
 					methode += Convert.ascii2char(octets.get(i));
 				}
 				i++;
 				for(; ! octets.get(i).equals("20") ; i++) {
-					url += Convert.ascii2char(octets.get(i));
+					url += ""+Convert.ascii2char(octets.get(i));
 				}
 				i++;
 				for(; ! (octets.get(i).equals("0d") && octets.get(i+1).equals("0a")) ; i++) {

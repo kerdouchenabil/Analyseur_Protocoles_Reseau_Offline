@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.Checksum;
 
-public class IP implements IProtocole {
-
+public class IP {
+	
+	private Ethernet eth;
 	private char version, ihl, flag0, flag1_df, flag2_mf;
 	private String tos, total_length;
 	private String id, fragment_offset;
@@ -20,6 +21,7 @@ public class IP implements IProtocole {
 	private List<String> options;
 
 	public IP(Ethernet eth) throws Exception { // a partir de l'octet 14 après Ethernet
+		this.eth=eth;
 		try {
 			octets = eth.getRemainingOctets();
 			

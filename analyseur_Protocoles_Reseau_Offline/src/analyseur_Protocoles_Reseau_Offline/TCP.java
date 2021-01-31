@@ -3,7 +3,7 @@ package analyseur_Protocoles_Reseau_Offline;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TCP implements IProtocole {
+public class TCP {
 	
 	private String src_port,dst_port,sq_Number,acknow_Number,data_offset,reserved;
 	private char urg,ack,psh,rst,syn,fin;
@@ -13,8 +13,10 @@ public class TCP implements IProtocole {
 	private List<String> options; 
 	private List<String> octets; //données de IP
 	public static int nb = 1;
+	private IP ip;
 	
 	public TCP(IP ip) throws InvalidTrameException {
+		this.ip=ip;
 		octets = ip.getData();
 		
 		if(octets.size()<20) {
